@@ -30,6 +30,7 @@ INSERT INTO tbl_member (id, pw, name) values ('ddasdaddd', '1234', '새똥이');
 -- 대문자는 널값까지사용 
 DROP table tbl_member;
 drop table tbl_post;
+
 create table tbl_post (
   pno bigint primary key auto_increment 
   , title varchar(1000) not null
@@ -39,3 +40,5 @@ create table tbl_post (
   , regdate datetime default now()
   , updatedate datetime default now()
 );
+
+SELECT  * FROM  tbl_post tp;
