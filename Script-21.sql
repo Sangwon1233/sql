@@ -42,3 +42,43 @@ create table tbl_post (
 );
 
 SELECT  * FROM  tbl_post tp;
+
+CREATE table tbl_post_category(
+	cno int primary key,
+	cname varchar(300) not null,
+	regdate datetime default now()
+);
+
+INSERT INTO tbl_post_category (cno,cname) values (1,'공지사항');
+INSERT INTO tbl_post_category (cno,cname) values (2,'자유게시판');
+INSERT INTO tbl_post_category (cno,cname) values (3,'자료실');
+
+ALTER TABLE post.tbl_post ADD cno INT DEFAULT 2 NOT NULL;
+
+ALTER TABLE post.tbl_post ADD CONSTRAINT tbl_post_tbl_post_category_FK FOREIGN KEY (cno) REFERENCES post.tbl_post_category(cno);
+
+
+select pno ,title,writer,view_count,regdate,cno 
+from tbl_post tp2
+WHERE  cno =2
+and(
+	title like CONCAT('%','3 ','%') or
+	content like '%3%'
+)
+order by 1 desc
+limit 10 offset 0;
+
+-- 1: 0
+-- 2: 10
+-- 3: 20
+
+
+select count(*) as cnt 
+from tbl_post 
+WHERE  cno =2;
+
+
+INSERT INTO tbl_post (title,writer,content )
+SELECT title,writer,content 
+FROM tbl_post;
+
