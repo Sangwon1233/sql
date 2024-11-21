@@ -10,7 +10,7 @@ create table tbl_member (
 
 
 
-SELECT  * FROM  tbl_member tm;
+SELECT  * FROM    tbl_member tm order by;
 INSERT INTO tbl_member (id, pw, name) values ('ddasdaddd', '1234', '새똥이');
 
 
@@ -81,4 +81,69 @@ WHERE  cno =2;
 INSERT INTO tbl_post (title,writer,content )
 SELECT title,writer,content 
 FROM tbl_post;
+
+CREATE table tbl_attach(
+	uuid varchar(500) primary key,
+	origin varchar(3000) not null,
+	path varchar(10) not null,
+	image tinyint(1) default 0,
+	pno bigint references tbl_post
+);
+
+SELECT * FROM  tbl_attach ta ;
+
+-- SELECT tp.*, (SELECT COUNT(*) from tbl_attach ta WHERE ta.pno = tp.pno) attach_flag FROM  tbl_post tp order by 1 DESC ;
+
+CREATE table tbl_reply(
+	-- pk rno
+	rno bigint primary key auto_increment,
+	-- content
+	content varchar(3000) not null,
+	-- regdate
+	regdate datetime default now(),
+	-- updatedate
+	updatedate datetime default now(),
+	-- hideen
+	hideen tinyint(1) default 0,
+	-- like
+	 likes int default 0,
+	-- writer
+	writer varchar(200) references tbl_member(id),
+	-- pno(fk)
+	pno bigint references tbl_post
+);
+
+insert into tbl_reply(pno, content, writer) values ((select max(pno) from tbl_post), '댓글', 'aa');
+
+SELECT * FROM  tbl_post tp ;
+
+
+SELECT *  -- 페이지 2페이지
+from tbl_reply tr 
+where pno = 257 
+AND rno> 9
+order by rno 
+LIMIT 5; 
+
+SELECT *
+FROM tbl_reply
+WHERE writer='abcd'
+and pno =1014
+order by rno DESC 
+limit 3;
+
+-- TC
+SELECT tp.*, 
+(SELECT COUNT(*) from tbl_attach ta WHERE ta.pno = tp.pno) attach_flag
+from tbl_post tp
+WHERE cno=  2
+and 
+	(title like ('%','제목','%')
+-- 	or 
+-- 	content like '%내용%'
+-- 	OR 
+-- 	writer like '%제목%'
+	)
+order by 1 desc 
+limit 10 offset 10;
 

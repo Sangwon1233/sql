@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_category` ADD FOREIGN KEY (`user_type`) REFERENCES `tbl_user_detail` (`type`);
